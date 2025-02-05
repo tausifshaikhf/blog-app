@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import authService from '../appwrite/auth.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
@@ -7,26 +7,37 @@ import Input from './Input'
 import Logo from './Logo.jsx'
 import { useForm } from 'react-hook-form'
 import { useDispatch , useSelector } from 'react-redux'
-import { login } from '../store/authSlice.js'
+import { clearAuthError, login } from '../store/authSlice.js'
+import { Flag } from 'appwrite'
+import Loader from '../pages/Loader.jsx'
 
 const Signup = () => {
     const navigate = useNavigate()
     const [Error, setError] = useState("")
+    const [loading , setLoading] = useState(false)
 
     const dispatch = useDispatch()
     const error = useSelector((state) => state.auth.authError)
 
+
     const { register, handleSubmit, formState: { errors } } = useForm()
+
+    useEffect(() => {
+        dispatch(clearAuthError())
+    },[])
 
     const createUser = async (data) => {
         setError("")
         try {
+            setLoading(true)
             const userData = await authService.createAccount(data)
+            if(!userData) setLoading(false)
             if (userData) {
                 const currentUser = await authService.getCurrentUser()
                 if (currentUser) {
-                    dispatch(login({ ...currentUser }))
+                    dispatch(login({currentUser}))
                     navigate('/')
+                    setLoading(false)
                 }
             }
         } catch (error) {
@@ -36,7 +47,9 @@ const Signup = () => {
     }
 
     return (
-        <div className="flex items-center justify-center w-full">
+        <>
+        {loading ? (<Loader/>) : (
+            <div className="flex items-center justify-center w-full">
             <div className="mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10">
                 <div className="mb-2 flex justify-center">
                     <span className="flex justify-center w-full max-w-[100px]">
@@ -71,8 +84,8 @@ const Signup = () => {
                                         message: "Name must be at least 6 characters"
                                     },
                                     maxLength: {
-                                        value: 20,
-                                        message: "Name must be less than 20 characters"
+                                        value: 30,
+                                        message: "Name must be less than 30 characters"
                                     }
                                 })}
                             />
@@ -135,6 +148,9 @@ const Signup = () => {
                 </form>
             </div>
         </div>
+        )}
+        
+        </>
     )
 }
 

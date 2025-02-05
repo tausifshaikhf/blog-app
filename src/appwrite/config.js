@@ -1,5 +1,7 @@
 import { Client, Databases, Storage, Query, ID } from "appwrite";
 import conf from "../conf/conf";
+import store from "../store/store";
+import { setServiceError } from "../store/authSlice";
 
 export class Service{
     client = new Client()
@@ -24,6 +26,7 @@ export class Service{
             return await this.databases.getDocument(conf.appwritedatabaseid, conf.appwritecollectionid, slug)
         } catch (error) {
             console.log("Appwrite Service :: getPost() :: ",error)
+            store.dispatch(setServiceError(error.message))
             return false
             
         }
@@ -36,6 +39,7 @@ export class Service{
             return await this.databases.listDocuments(conf.appwritedatabaseid,conf.appwritecollectionid,queries)
         } catch (error) {
             console.log("Appwrite Service :: getPosts() :: ",error)
+            store.dispatch(setServiceError(error.message))
         }
     }
 
@@ -50,6 +54,7 @@ export class Service{
             )
         } catch (error) {
             console.log("Appwrite Service :: createPost() :: ",error)
+            store.dispatch(setServiceError(error.message))
             return false
         }
     }
@@ -62,6 +67,7 @@ export class Service{
             )
         } catch (error) {
             console.log("Appwrite Service :: updatePost() :: ",error)
+            store.dispatch(setServiceError(error.message))
             return false 
         }
     }
@@ -77,6 +83,7 @@ export class Service{
             return true;    
         } catch (error) {
             console.log("Appwrite Service :: deletePost() :: ",error)
+            store.dispatch(setServiceError(error.message))
         }
     }
 

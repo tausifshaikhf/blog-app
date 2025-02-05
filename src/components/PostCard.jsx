@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import appwriteService from '../appwrite/config'
-import parse from 'html-react-parser'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import appwriteService from '../appwrite/config';
+import parse from 'html-react-parser';
 
 const PostCard = ({ $id, title, featuredImage, content }) => {
     const imageUrl = featuredImage 
@@ -10,16 +10,16 @@ const PostCard = ({ $id, title, featuredImage, content }) => {
 
     return (
         <Link to={`/post/${$id}`}>
-            <div className="w-full bg-gray-100 rounded-xl p-4 ">
-                <div className="w-full justify-center mb-4">
+            <div className="post-card">
+                <div className="image-container">
                     <img
                         src={imageUrl}
                         alt={title}
-                        className="rounded-xl w-full h-40 object-cover"
+                        className="image"
                     />
                 </div>
-                <h2 className="text-xl font-bold truncate">{title}</h2>
-                <div className="pt-3 line-clamp-3">
+                <h2 className="post-title text-center">{title}</h2>
+                <div className="post-content text-center">
                     {parse(content)}
                 </div>
             </div>
@@ -27,4 +27,4 @@ const PostCard = ({ $id, title, featuredImage, content }) => {
     );
 };
 
-export default PostCard
+export default PostCard;

@@ -13,6 +13,7 @@ const Home = () => {
       if (posts) {
         // the posts in itself has an object named as documents from where we're extracting the posts because posts has many documents like this
         setPosts(posts.documents);
+ 
 
  
       }

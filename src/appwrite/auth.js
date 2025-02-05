@@ -53,7 +53,7 @@ export class AuthService{
             return await this.account.get()
         }catch(err){
             console.log("Appwrite service :: getCurrentUser() :: ",err)
-            store.dispatch(setAuthError(err.message))
+           
         }
         return null
     }

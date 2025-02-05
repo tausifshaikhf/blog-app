@@ -31,7 +31,7 @@ const AllPosts = () => {
   return (
     <>
       {Posts && (
-        <div className="w-full py-8 min-h-[80vh]">
+        <div className="w-full py-8 min-h-[85vh]">
         <Container>
           <div className="flex flex-wrap">
             {Posts.map((post) => (
